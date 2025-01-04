@@ -12,6 +12,8 @@ import java.util.Map;
  */
 public class Code {
 
+	public static final int MAX_ADDR = 0xb800;
+	public static final int MAX_WORD = (1 << 23) - 1;
 	private String name;
 	private List<Node> program;
 	private Map<String, Integer> symbols;
@@ -45,6 +47,10 @@ public class Code {
 
     public void setSymbols(Map<String, Integer> symbols) {
         this.symbols = symbols;
+    }
+
+    public void append(Node instruction) {
+        this.program.add(instruction);
     }
 	
 	
