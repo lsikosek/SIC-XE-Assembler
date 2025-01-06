@@ -27,6 +27,9 @@ public class Directive extends Node {
     public Directive(Mnemonic mnemonic, String symbol) {
     	super(mnemonic);
     }
+    
+    @Override
+    public void resolve(Code code
 
     
 

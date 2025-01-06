@@ -8,9 +8,12 @@ import sic.asm.code.Comment;
 import sic.asm.code.Directive;
 import sic.asm.code.Node;
 import sic.asm.code.SemanticError;
+import sic.asm.code.Storage;
 import sic.asm.mnemonics.Mnemonic;
 import sic.asm.mnemonics.MnemonicD;
 import sic.asm.mnemonics.MnemonicDn;
+import sic.asm.mnemonics.MnemonicSd;
+import sic.asm.mnemonics.MnemonicSn;
 
 /**
  * Podporni razred za predmet Sistemska programska oprema.
@@ -64,6 +67,9 @@ public class Parser {
 
 	public int parseNumber(int lo, int hi) throws SyntaxError {
 		int num;
+		
+		boolean negative = lexer.advanceIf('-');
+		
 		if (lexer.peek() == '0') {
 			int r = -1;
 			switch (lexer.peek(1)) {
@@ -97,6 +103,9 @@ public class Parser {
 		// number must not be followed by letter or digit
 		if (Character.isLetterOrDigit(lexer.peek()))
 			throw new SyntaxError(String.format("invalid digit '%c'", lexer.peek()), lexer.row, lexer.col);
+		
+		// check negative
+		if (negative) num = -num;
 		// check range
 		if (num < lo || num > hi)
 			throw new SyntaxError(String.format("Number '%d' out of range [%d..%d]", num, lo, hi), lexer.row, lexer.col);
@@ -187,6 +196,9 @@ public class Parser {
 	}
 
 	void initMnemonics() {
+		
+		// MORAL BOŠ DODATI ŠE DODATNE PUT-E ZA +LDA, +LDB ITD. ZA VSE F4 UKAZE
+		
 		this.mnemonics = new HashMap<String, Mnemonic>();
 		// Directives
 		put(new MnemonicD ("NOBASE",	Directive.NOBASE,	"directive", "Unset base register."));
@@ -197,10 +209,10 @@ public class Parser {
 		put(new MnemonicDn("EQU",		Directive.EQU,		"directive", "Equate symbol to expression."));
 		put(new MnemonicDn("ORG",		Directive.ORG,		"directive", "Set location counter."));
 		// Storage directives
-//		put(new MnemonicSn("RESB",		Storage.RESB,		"storage\t", "Reserve bytes."));
-//		put(new MnemonicSn("RESW",		Storage.RESW,		"storage\t", "Reserve words."));
-//		put(new MnemonicSd("BYTE",		Storage.BYTE,		"storage\t", "Initialize bytes."));
-//		put(new MnemonicSd("WORD",		Storage.WORD,		"storage\t", "Initialize words."));
+		put(new MnemonicSn("RESB",		Storage.RESB,		"storage\t", "Reserve bytes."));
+		put(new MnemonicSn("RESW",		Storage.RESW,		"storage\t", "Reserve words."));
+		put(new MnemonicSd("BYTE",		Storage.BYTE,		"storage\t", "Initialize bytes."));
+		put(new MnemonicSd("WORD",		Storage.WORD,		"storage\t", "Initialize words."));
 		// Format 1 mnemonics, no operand
 //		put(new MnemonicF1("FIX",		Opcode.FIX,			"A<-int(F)", "Convert to fixed point number."));
 //		put(new MnemonicF1("FLOAT", 	Opcode.FLOAT,		"F<-float (A)", "Convert to floating point number."));

@@ -6,7 +6,7 @@ import sic.asm.code.InstructionF2;
 import sic.asm.code.Node;
 import sic.asm.parsing.Parser;
 import sic.asm.parsing.SyntaxError;
-import sic.asm.code.Registers;
+import sic.asm.utils.Registers;
 
 public class MnemonicF2r extends Mnemonic{
 	
@@ -30,11 +30,7 @@ public class MnemonicF2r extends Mnemonic{
 			throw new SyntaxError(String.format("Invalid character '%c", parser.lexer.peek()), parser.lexer.row, parser.lexer.col);
 	}
 
-	@Override
-	public String operandToString(Node instruction) {
-		Directive i = ((Directive)instruction);
-		return i.symbol != null ? i.symbol : Integer.toString(i.value);
-	}
+	
 	
 	
 }

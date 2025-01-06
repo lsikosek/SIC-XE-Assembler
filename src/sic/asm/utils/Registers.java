@@ -1,4 +1,4 @@
-package sic.asm.code;
+package sic.asm.utils;
 
 import java.util.Map;
 

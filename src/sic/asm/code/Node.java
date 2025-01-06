@@ -8,6 +8,9 @@ public abstract class Node {
 	protected String label;
 	protected Mnemonic mnemonic;
 	protected String comment;
+	
+	public String symbol;
+	public int value;
 
 	public Node(Mnemonic mnemonic) {
 		this.mnemonic = mnemonic;
@@ -44,5 +47,26 @@ public abstract class Node {
 	public String operandToString() {
 		return mnemonic.operandToString(this);
 	}
+	
+	public int length() {
+		return 0;
+	}
+	
+	public void enter(Code code) {
+		code.locctr = code.locctr2;
+		code.locctr2 += this.length();
+	}
+	
+	public void leave(Code code) {}
+	
+	public void activate(Code code) {
+		code.put(this.label, code.locctr);
+	}
+	
+	public void resolve(Code code) {
+		if (this.symbol != null) {
+			this.value = code.getSymbols().get(this.symbol);
+		}
+	} 
 
 }
