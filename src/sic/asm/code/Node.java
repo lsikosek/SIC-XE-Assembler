@@ -1,6 +1,7 @@
 package sic.asm.code;
 
 import sic.asm.mnemonics.Mnemonic;
+import sic.asm.parsing.ParsingError;
 
 
 public abstract class Node {
@@ -63,10 +64,14 @@ public abstract class Node {
 		code.put(this.label, code.locctr);
 	}
 	
-	public void resolve(Code code) {
+	public void resolve(Code code) throws ParsingError {
 		if (this.symbol != null) {
 			this.value = code.getSymbols().get(this.symbol);
 		}
-	} 
+	}
+	
+	public byte[] emitCode() {
+		return null;
+	}
 
 }

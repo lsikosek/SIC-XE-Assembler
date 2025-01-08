@@ -27,8 +27,24 @@ public class InstructionF2 extends Node {
         this.reg2 = reg2;
         this.symbol = symbol;
     }
-
     
+    @Override
+    public int length() {
+    	return 2;
+    }
+
+    @Override
+    public byte[] emitCode() {
+    	byte[] array = new byte[2];
+    	array[0] = (byte)this.mnemonic.opcode;
+    	
+    	int regs = 0;
+    	regs |= reg2; // TODO spremeni nastavitev registrov iz -1 na 0 povsod
+    	regs |= (reg1<<4);
+    	
+    	array[1] = (byte)regs;
+    	return array;
+    }
 
 
 }

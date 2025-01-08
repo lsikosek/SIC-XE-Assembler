@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import sic.asm.parsing.ParsingError;
+
 
 /**
  * Podporni razred za predmet Sistemska programska oprema.
@@ -24,12 +26,19 @@ public class Code {
     public static final int MASK_SDISP = 0x7FF;
     public static final int MIN_SDISP = -(1 << 11);
     public static final int MAX_SDISP = (1 << 11) - 1;
+	public static final int MIN_SICADDR = 0;
+	public static final int MAX_SICADDR = (1 << 15)-1;
     
 	private String name;
 	private List<Node> program;
 	private Map<String, Integer> symbols;
 	public int locctr;
 	public int locctr2;
+	public boolean baseRelative;
+	public int base;
+	
+	public int programStart;
+	public int programEnd;
 	
 	public Code() {
 		this.name = "";
@@ -40,8 +49,10 @@ public class Code {
 	
 	
 	public void begin() {
+		this.base=0;
 		this.locctr = 0;
 		this.locctr2 = 0;
+		this.baseRelative = false;
 	}
 	
 	public void end() {}
@@ -100,12 +111,42 @@ public class Code {
     	
     	for (Node node : this.program) {
     		node.enter(this);
-    		node.resolve(this);
+    		try {
+				node.resolve(this);
+			} catch (ParsingError e) {
+				e.printStackTrace();
+			}
     		node.leave(this);
     	}
     	
     	this.end();
     }
+    
+    public byte[] emitCode() {
+    	byte[] c = new byte[programEnd];
+    	
+    	int i = programStart;
+    	
+    	for (Node node : program) {
+    		byte[] arr = node.emitCode();
+    		
+    		for (byte b : arr) {
+    			c[i] = b;
+    			i++;
+    		}
+    		
+    		// TODO napiši length za vse node
+    		
+    	}
+    	
+    	return c;
+    }
+
+
+	public void print() {
+		System.out.println(this.emitCode());
+		
+	}
 	
 	
 

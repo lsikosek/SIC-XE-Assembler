@@ -57,8 +57,6 @@ public class MnemonicF4m extends Mnemonic{
 		return new InstructionF4(this, value, symbol, flags);
 		
 		
-		
-		
 	}
 
 }

@@ -19,7 +19,9 @@ public class Flags {
     public static final int BASERELATIVE = 0x40;
     public static final int PCRELATIVE   = 0x20;
     public static final int EXTENDED     = 0x10;
-
+    
+    public static final int MAX_PC_REL_ADDR = 2047;
+ 
     // flags
     private int ni;         // ...ni: only lower two bits are used
     private int xbpe;       // ...xbpe----: second four bits are used
@@ -173,5 +175,21 @@ public class Flags {
         if (isExtended()) return Code.MAX_ADDR;
         else return Code.MAX_DISP;
     }
+    
+    public static int intToDisp(int val) {
+        if (val >= 0) return val & Code.MASK_DISP;
+        return Code.MAX_DISP + 1 + val;  // ~(-val - 1) & MASK_DISP;
+    }
 
+    public static boolean checkPCRelativeFit(int val, int pc) {
+    	return (val-pc >= -2048 && val-pc<=2047);
+    }
+    
+    public static boolean checkBaseRelativeFit(int val, int base) {
+    	return checkPCRelativeFit(val,base);
+    }
+    
+    public static boolean isSicAddr(int val) {
+        return Code.MIN_SICADDR <= val && val <= Code.MAX_SICADDR;
+    }
 }
