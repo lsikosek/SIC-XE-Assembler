@@ -10,7 +10,9 @@ import sic.asm.utils.Flags;
 
 public class MnemonicF3m extends Mnemonic{
 	
+	
 	public int m;
+	public Flags flags;
 	
 	public MnemonicF3m(String name, int opcode, String hint, String desc) {
 		super(name, opcode, hint, desc);
@@ -19,7 +21,7 @@ public class MnemonicF3m extends Mnemonic{
 	@Override
 	public Node parse(Parser parser) throws SyntaxError {
 		
-		Flags flags = new Flags();
+		flags = new Flags();
 		int value;
 		String symbol;
 		// PODPORA ZA LITERALE
@@ -59,6 +61,18 @@ public class MnemonicF3m extends Mnemonic{
 		
 		
 		
+	}
+	
+	@Override
+	public String operandToString(Node ins) {
+		StringBuilder sb = new StringBuilder();
+		if (flags.isImmediate()) sb.append('#');
+		if (flags.isIndirect()) sb.append('@');
+		
+		if (ins.symbol!=null) sb.append(ins.symbol);
+		else sb.append(ins.value);
+		
+		return sb.toString();
 	}
 
 }

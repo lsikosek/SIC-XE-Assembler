@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import sic.asm.parsing.ParsingError;
+import sic.asm.utils.Utils;
 
 
 /**
@@ -110,6 +111,10 @@ public class Code {
     	this.begin();
     	
     	for (Node node : this.program) {
+    		System.out.println(node);
+    		System.out.println(locctr);
+
+    		
     		node.enter(this);
     		try {
 				node.resolve(this);
@@ -130,6 +135,8 @@ public class Code {
     	for (Node node : program) {
     		byte[] arr = node.emitCode();
     		
+    		if (arr==null) continue;
+    		
     		for (byte b : arr) {
     			c[i] = b;
     			i++;
@@ -141,10 +148,94 @@ public class Code {
     	
     	return c;
     }
+    
+    public String emitText() {
+    	
+    	this.begin();
+    	
+    	StringBuilder sbH = new StringBuilder();
+    	StringBuilder sbT = new StringBuilder();
+
+    	sbH.append("H");
+    	sbH.append(String.format("%-6s",this.name));
+    	sbH.append(Utils.toHex(programStart, 6));
+    	
+    	
+    	
+    	// Tzapisi
+    	while (locctr < programEnd) {
+    		sbT.append(TZapis());
+    		sbT.append("\n");
+    	}
+    	// ...
+    	
+    	
+    	sbH.append(Utils.toHex(locctr, 6));
+    	sbH.append("\n");
+    	
+    	sbH.append(sbT.toString());
+    	
+    	sbH.append("E");
+    	sbH.append(Utils.toHex(programStart, 6));
+    	
+    	return sbH.toString();
+    	
+    }
+    
+    public String TZapis() {
+    	int length = 0;
+    	int addr = this.locctr;
+    	
+    	StringBuilder sb = new StringBuilder();
+    	StringBuilder sb2 = new StringBuilder();
+
+    	
+    	sb.append("T");
+    	sb.append(Utils.toHex(addr, 6));
+    	
+    	for (Node node: program) {
+    		int temp = 0;
+    		if (node.mnemonic.opcode!=Storage.RESW && node.mnemonic.opcode!=Storage.RESB && node.mnemonic.opcode!=Directive.ORG) {
+    			temp = node.length();
+    		}
+    		else {
+        		node.enter(this);
+        		node.leave(this);
+        		break;
+    		}
+    		
+    		if (length+temp>30) {
+    			break;
+    		}
+    		
+    		node.enter(this);
+    		
+    		sb2.append(node.emitText());
+    		length+=temp;
+    		
+    		node.leave(this);
+    		
+    	}
+    	
+    	sb.append(Utils.toHex(length, 2));
+    	sb.append(sb2.toString());
+    	
+    	return sb.toString();
+    	
+    }
 
 
 	public void print() {
+		System.out.printf("start: %d end: %d\n",programStart,programEnd);
+		byte[] a = this.emitCode();
+		
+		for (byte b : a) {
+			System.out.printf("%s",Utils.toBin(b));
+		}
+		
 		System.out.println(this.emitCode());
+		
+		System.out.print(this.emitText());
 		
 	}
 	

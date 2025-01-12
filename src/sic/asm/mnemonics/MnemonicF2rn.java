@@ -28,7 +28,7 @@ public class MnemonicF2rn extends Mnemonic{
 			if (Character.isDigit(parser.lexer.peek())) {
 				int num = parser.parseNumber(0, Code.MAX_ADDR);
 				
-				return new InstructionF2(this, Registers.symbolToValuesMap.get(reg), -1, num);
+				return new InstructionF2(this, Registers.symbolToValuesMap.get(reg), 0, num);
 				
 			}
 			else {

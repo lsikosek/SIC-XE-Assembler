@@ -68,10 +68,11 @@ public class Directive extends Node {
     		// TODO
     		break;
     	case START:
+    		code.setName(this.label);
     		code.programStart = this.value;
     		break;
     	case END:
-    		code.programEnd = this.value;
+    		code.programEnd = code.locctr;//this.value;
     		break;
     	case EQU:
     		break;

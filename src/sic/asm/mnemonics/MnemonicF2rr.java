@@ -35,7 +35,7 @@ public class MnemonicF2rr extends Mnemonic {
 				}
 				
 				// SUCCESSFULLY RETURN RESULT
-				return new InstructionF2(this, Registers.symbolToValuesMap.get(reg1), Registers.symbolToValuesMap.get(reg2), -1);
+				return new InstructionF2(this, Registers.symbolToValuesMap.get(reg1), Registers.symbolToValuesMap.get(reg2), 0);
 				
 			}
 			else {

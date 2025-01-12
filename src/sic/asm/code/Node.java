@@ -2,6 +2,8 @@ package sic.asm.code;
 
 import sic.asm.mnemonics.Mnemonic;
 import sic.asm.parsing.ParsingError;
+import sic.asm.utils.Flags;
+import sic.asm.utils.Utils;
 
 
 public abstract class Node {
@@ -54,14 +56,16 @@ public abstract class Node {
 	}
 	
 	public void enter(Code code) {
-		code.locctr = code.locctr2;
-		code.locctr2 += this.length();
+		//code.locctr = code.locctr2;
+		//code.locctr2 += this.length();
 	}
 	
-	public void leave(Code code) {}
+	public void leave(Code code) {
+		code.locctr += this.length();
+	}
 	
 	public void activate(Code code) {
-		code.put(this.label, code.locctr);
+		code.put(this.label, code.locctr+this.length()); //TODO possible cause of narobe addressing
 	}
 	
 	public void resolve(Code code) throws ParsingError {
@@ -72,6 +76,24 @@ public abstract class Node {
 	
 	public byte[] emitCode() {
 		return null;
+	}
+	
+	public String emitText() {
+		byte[] arr = emitCode();
+		if (arr==null) return new String("");
+		StringBuilder sb = new StringBuilder();
+			
+		for (byte b_ : arr) {
+			
+			int b = Flags.intToDisp(b_);
+			
+			System.out.printf("%s - %s\n",Utils.toBin(b),Utils.toHex(b));
+
+			
+			sb.append(Utils.toHex(b));
+		}
+		
+		return sb.toString();
 	}
 
 }

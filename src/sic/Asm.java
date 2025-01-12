@@ -38,12 +38,18 @@ public class Asm {
 
 		// TODO
 		//input = readFile(new File(args[0]));
-		input = "    START 42\n    END zacetek";
+		input = "lol 	START 42\n    "
+			  + "	 	LDB #3\n"
+			  + "halt	J halt\n"
+			  + "	 	END zacetek";
 
 		Parser parser = new Parser();
 		Code code;
 		try {
 			code = parser.parse(input);
+			code.activate(); // IZBRISI
+			code.resolve(); // IZBRISI
+			
 			code.print();
 		} catch (SyntaxError e) {
 			System.err.println(e);

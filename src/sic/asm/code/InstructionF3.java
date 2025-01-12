@@ -85,7 +85,7 @@ public class InstructionF3 extends Node {
     
     @Override
     public byte[] emitCode() {
-    	byte[] array = new byte[2];
+    	byte[] array = new byte[3];
     	
     	// If this is F3 without operands
     	if (this.flags==null) {

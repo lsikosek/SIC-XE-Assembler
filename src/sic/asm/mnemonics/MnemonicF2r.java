@@ -22,7 +22,7 @@ public class MnemonicF2r extends Mnemonic{
 			if (!Registers.symbolToValuesMap.containsKey(reg)) {
 				throw new SyntaxError(String.format("Invalid register name '%s'", reg), parser.lexer.row, parser.lexer.col);
 			}
-			return new InstructionF2(this, Registers.symbolToValuesMap.get(reg), -1, -1);
+			return new InstructionF2(this, Registers.symbolToValuesMap.get(reg), 0, 0);
 			
 		// otherwise: error
 		}

@@ -1,6 +1,7 @@
 package sic.asm.code;
 
 import sic.asm.mnemonics.Mnemonic;
+import sic.asm.utils.Utils;
 
 public class Storage extends Node{
 	
@@ -61,6 +62,30 @@ public class Storage extends Node{
 		return null;
 		
     }
+	
+	@Override
+	public String emitText() {
+		switch (mnemonic.opcode) {
+		case RESB:
+			return new String("");
+			//break;
+		case RESW:
+			return new String("");
+			//break;
+		default:
+			byte[] arr = emitCode();
+			
+			StringBuilder sb = new StringBuilder();
+			
+			for (byte b : arr) {
+				sb.append(Utils.toHex(b));
+			}
+			
+			return sb.toString();
+			//break;
+		}
+		
+	}
 	
 
 }

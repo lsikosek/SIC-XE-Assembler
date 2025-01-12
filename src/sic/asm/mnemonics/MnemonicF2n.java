@@ -17,10 +17,10 @@ public class MnemonicF2n extends Mnemonic{
 	public Node parse(Parser parser) throws SyntaxError {
 		// number
 		if (Character.isDigit(parser.lexer.peek()))
-			return new InstructionF2(this, -1, -1, parser.parseNumber(0, Code.MAX_ADDR));
+			return new InstructionF2(this, 0, 0, parser.parseNumber(0, Code.MAX_ADDR));
 		// symbol
 		else if (Character.isLetter(parser.lexer.peek()))
-			return new InstructionF2(this, -1, -1, parser.parseSymbol());
+			return new InstructionF2(this, 0, 0, parser.parseSymbol());
 		// otherwise: error
 		else
 			throw new SyntaxError(String.format("Invalid character '%c", parser.lexer.peek()), parser.lexer.row, parser.lexer.col);
