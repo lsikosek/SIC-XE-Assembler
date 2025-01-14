@@ -19,6 +19,7 @@ import sic.asm.mnemonics.MnemonicF2rn;
 import sic.asm.mnemonics.MnemonicF2rr;
 import sic.asm.mnemonics.MnemonicF3;
 import sic.asm.mnemonics.MnemonicF3m;
+import sic.asm.mnemonics.MnemonicF4m;
 import sic.asm.mnemonics.MnemonicSd;
 import sic.asm.mnemonics.MnemonicSn;
 import sic.asm.utils.Opcode;
@@ -165,9 +166,17 @@ public class Parser {
 		lexer.skipWhitespace();
 		// parse any operands and obtain instruction
 		Node node = mnemonic.parse(this);
+		
+		
+		// TESTING, MAYBE NOT GREAT
+		//lexer.skipWhitespace();
+		//--------------------
+		
 		// set label and comment
 		node.setLabel(label);
 		node.setComment(lexer.readTo('\n'));
+		
+		
 		return node;
 	}
 
@@ -288,6 +297,56 @@ public class Parser {
 		put(new MnemonicF3m("TD",		Opcode.TD, "testdev(m)", "Test device"));
 		// stem
 		put(new MnemonicF3m("SSK",	Opcode.SSK, "m<-(A)\t", "Protection key for address"));
+		
+		// F4
+		put(new MnemonicF4m("+LDA",	Opcode.LDA, "A<-(m..m+2)", "Load register A from address m"));
+		put(new MnemonicF4m("+LDCH",	Opcode.LDCH, "A.1<-(m)", "Load byte to register A from address m"));
+		put(new MnemonicF4m("+LDB",	Opcode.LDB, "B<-(m..m+2)", "Load register B from address m"));
+		put(new MnemonicF4m("+LDF",	Opcode.LDF, "F<-(m..m+5)", "Load register F from address m"));
+		put(new MnemonicF4m("+LDL",	Opcode.LDL, "L<-(m..m+2)", "Load register L from address m"));
+		put(new MnemonicF4m("+LDS",	Opcode.LDS, "S<-(m..m+2)", "Load register S from address m"));
+		put(new MnemonicF4m("+LDT",	Opcode.LDT, "T<-(m..m+2)", "Load register T from address m"));
+		put(new MnemonicF4m("+LDX",	Opcode.LDX, "X<-(m..m+2)", "Load register X from address m"));
+		put(new MnemonicF4m("+LPS",	Opcode.LPS, "PS->(m..2)", "Load processor status from address m"));
+		put(new MnemonicF4m("+STA",	Opcode.STA, "m..m+2<-(A)", "Store register A to address m"));
+		put(new MnemonicF4m("+STCH",	Opcode.STCH, "m<-(A.1)", "Store byte from register A to address m"));
+		put(new MnemonicF4m("+STB",	Opcode.STB, "m..m+2<-(B)", "Store register B to address m"));
+		put(new MnemonicF4m("+STF",	Opcode.STF, "m..m+5<-(F)", "Store register F to address m"));
+		put(new MnemonicF4m("+STL",	Opcode.STL, "m..m+2<-(L)", "Store register L to address m"));
+		put(new MnemonicF4m("+STS",	Opcode.STS, "m..m+2<-(S)", "Store register S to address m"));
+		put(new MnemonicF4m("+STT",	Opcode.STT, "m..m+2<-(T)", "Store register T to address m"));
+		put(new MnemonicF4m("+STX",	Opcode.STX, "m..m+2<-(X)", "Store register X to address m"));
+		put(new MnemonicF4m("+STI",	Opcode.STI, "timer<-(m..m+2)", "Set interval timer"));
+		put(new MnemonicF4m("+STSW",	Opcode.STS, "m..m+2<-(SW)", "Store processor status word to address m"));
+		// fixed point operations, register-memory
+		put(new MnemonicF4m("+ADD",	Opcode.ADD, "A<-(A)+(m..m+2)", "Add to accumulator"));
+		put(new MnemonicF4m("+SUB",	Opcode.SUB, "A<-(A)-(m..m+2)", "Subtract from accumulator"));
+		put(new MnemonicF4m("+MUL",	Opcode.MUL, "A<-(A)*(m..m+2)", "Multiply with accumulator"));
+		put(new MnemonicF4m("+DIV",	Opcode.DIV, "A<-(A)/(m..m+2)", "Divide accumulator"));
+		put(new MnemonicF4m("+COMP",	Opcode.COMP, "A<-(A):(m..m+2)", "Compare accumulator"));
+		put(new MnemonicF4m("+AND",	Opcode.AND, "A<-(A)&(m..m+2)", "Bitwise and accumulator"));
+		put(new MnemonicF4m("+OR",	Opcode.OR, "A<-(A)|(m..m+2)", "Bitwise or accumulator"));
+		put(new MnemonicF4m("+TIX",	Opcode.TIX, "X<-(X)+1;(X):(m..m+2)", "Increment and compare index register"));
+		// floating point arithmetic
+		put(new MnemonicF4m("+ADDF",	Opcode.ADDF, "F<-(F)+(m..m+2)", "Floating point addition"));
+		put(new MnemonicF4m("+SUBF",	Opcode.SUBF, "F<-(F)-(m..m+2)", "Floating point subtraction"));
+		put(new MnemonicF4m("+MULF",	Opcode.MULF, "F<-(F)*(m..m+2)", "Floating point multiplication"));
+		put(new MnemonicF4m("+DIVF",	Opcode.DIVF, "F<-(F)/(m..m+2)", "Floating point division"));
+		put(new MnemonicF4m("+COMPF",	Opcode.COMPF, "F<-(F):(m..m+5)", "Floating point comparison"));
+		// 
+		put(new MnemonicF4m("+J",	Opcode.J, "PC<-m\t", "Unconditional jump"));
+		put(new MnemonicF4m("+JEQ",	Opcode.JEQ, "PC<-m if CC is =", "Jump if equal"));
+		put(new MnemonicF4m("+JGT",	Opcode.JGT, "PC<-m if CC is >", "Jump if greater than"));
+		put(new MnemonicF4m("+JLT",	Opcode.JLT, "PC<-m if CC is <", "Jump if lower than"));
+		put(new MnemonicF4m("+JSUB",	Opcode.JSUB, "L<-(PC);PC<-m", "Jump to subroutine"));
+		put(new MnemonicF3("+RSUB", Opcode.RSUB, "PC<-(L)", "Return from subroutine."));
+		// 
+		put(new MnemonicF4m("+RD",	Opcode.RD, "A.1<-readdev (m)", "Read from device"));
+		put(new MnemonicF4m("+WD",	Opcode.WD, "writedev(m),A.1", "Write to device"));
+		put(new MnemonicF4m("+TD",	Opcode.TD, "testdev(m)", "Test device"));
+		// system
+		put(new MnemonicF4m("+SSK",	Opcode.SSK, "m<-(A)\t", "Protection key for address"));
+
 	}
 
 	public Parser() {

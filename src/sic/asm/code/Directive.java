@@ -7,7 +7,7 @@ import sic.asm.mnemonics.MnemonicDn;
 public class Directive extends Node {
 	
 	public int value;
-	public String symbol;
+	//public String symbol;
 
 
 	public static final int NOBASE = 0;
@@ -26,6 +26,7 @@ public class Directive extends Node {
     
     public Directive(Mnemonic mnemonic, String symbol) {
     	super(mnemonic);
+    	this.symbol = symbol;
     }
     
     @Override

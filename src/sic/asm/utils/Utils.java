@@ -28,8 +28,9 @@ public class Utils {
 		}
 		
 		sb.reverse();
+		
 
-		return sb.toString();
+		return sb.toString().toUpperCase();
 	}
 	
 	public static String toBin(int b) {
@@ -40,7 +41,7 @@ public class Utils {
 		StringBuilder sb = new StringBuilder();
 
 		while (n>0 || val>0) {
-			sb.append(val%2);
+			sb.append(1&val);
 			val>>=1;
 			n--;
 			

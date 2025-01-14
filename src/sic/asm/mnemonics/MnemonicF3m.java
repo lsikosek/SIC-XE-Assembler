@@ -42,6 +42,7 @@ public class MnemonicF3m extends Mnemonic{
 		else if (Character.isLetter(parser.lexer.peek()) || parser.lexer.peek() == '_') {
 			value = 0;
 			symbol = parser.parseSymbol();
+			System.out.printf("Parsed: %s mnemonic %s\n",symbol,this);
 		} else {
 			throw new SyntaxError(String.format("Invalid character '%c", parser.lexer.peek()), parser.lexer.row, parser.lexer.col);
 		}
@@ -56,6 +57,8 @@ public class MnemonicF3m extends Mnemonic{
 		}
 		
 		
+		//System.out.printf("mnemonic symbol: %s\n",symbol);
+		
 		return new InstructionF3(this, value, symbol, flags);
 		
 		
@@ -69,7 +72,7 @@ public class MnemonicF3m extends Mnemonic{
 		if (flags.isImmediate()) sb.append('#');
 		if (flags.isIndirect()) sb.append('@');
 		
-		if (ins.symbol!=null) sb.append(ins.symbol);
+		if (ins.getSymbol()!=null) sb.append(ins.getSymbol());
 		else sb.append(ins.value);
 		
 		return sb.toString();

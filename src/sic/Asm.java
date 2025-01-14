@@ -37,11 +37,11 @@ public class Asm {
 		String input;
 
 		// TODO
-		//input = readFile(new File(args[0]));
-		input = "lol 	START 42\n    "
-			  + "	 	LDB #3\n"
-			  + "halt	J halt\n"
-			  + "	 	END zacetek";
+		input = readFile(new File(args[0]));
+//		input = "lol 	START 42\n    "
+//			  + "	 	LDB #15\n"
+//			  + "halt	J halt\n"
+//			  + "	 	END lol";
 
 		Parser parser = new Parser();
 		Code code;

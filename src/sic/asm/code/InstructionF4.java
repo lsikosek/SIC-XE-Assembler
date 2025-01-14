@@ -8,7 +8,7 @@ public class InstructionF4 extends Node {
 
 
     public int value;
-    public String symbol;
+    //public String symbol;
     public Flags flags;
 
     public static final int MAX_OPERAND = (1<<20)-1;
@@ -23,6 +23,8 @@ public class InstructionF4 extends Node {
     
     public InstructionF4(Mnemonic mnemonic, int value, String symbol, Flags flags) {
         super(mnemonic);
+    	this.symbol = symbol;
+
         
         this.value = value;
         this.flags = flags;
@@ -39,6 +41,8 @@ public class InstructionF4 extends Node {
 			this.value = code.getSymbols().get(this.symbol);
 		}
 		
+		flags.setExtended();
+		
 		
 		if (code.baseRelative || flags.isPCRelative()) {
 			throw new ParsingError("Invalid addressing.",code.locctr);
@@ -52,7 +56,7 @@ public class InstructionF4 extends Node {
     
     @Override
     public byte[] emitCode() {
-    	byte[] array = new byte[3];
+    	byte[] array = new byte[4];
     	
     	if (this.flags==null) {
     		array[0] = (byte)this.mnemonic.opcode;

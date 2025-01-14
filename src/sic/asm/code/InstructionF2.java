@@ -7,7 +7,7 @@ public class InstructionF2 extends Node {
     public int reg1;
     public int reg2;
     public int value;
-    public String symbol;
+    //public String symbol;
 
 
     

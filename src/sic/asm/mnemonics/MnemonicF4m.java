@@ -66,7 +66,7 @@ public class MnemonicF4m extends Mnemonic{
 		if (flags.isImmediate()) sb.append('#');
 		if (flags.isIndirect()) sb.append('@');
 		
-		if (ins.symbol!=null) sb.append(ins.symbol);
+		if (ins.getSymbol()!=null) sb.append(ins.getSymbol());
 		else sb.append(ins.value);
 		
 		return sb.toString();
