@@ -1,0 +1,91 @@
+00000            prog   START  0
+00000  4B20B8           JSUB   sinit
+00003  4B208B    loop   JSUB   rd
+00006  290000           COMP   #0
+00009  332012           JEQ    halt
+0000C  4B2012           JSUB   fac
+0000F  4B203A           JSUB   prnt
+00012  D900FA           RD     #0
+00015  010020           LDA    0
+00018  DD0001           WD     #0
+0001B  3F2FE5           J      loop
+0001E  3F2FFD    halt   J      halt
+00021  1620CA    fac    STL    @sp
+00024  4B20A3           JSUB   spush
+00027  290001           COMP   #0
+0002A  332016           JEQ    facEnd
+0002D  AC03             RMO    
+0002F  7A20BC           STB    @sp
+00032  4B2095           JSUB   spush
+00035  1D0001           SUB    #0
+00038  4B2FE6           JSUB   fac
+0003B  4B209E           JSUB   spop
+0003E  6A20AD           LDB    @sp
+00041  9830             MULR   
+00043  4B2096    facEnd JSUB   spop
+00046  0A20A5           LDL    @sp
+00049  4C0000           RSUB   
+0004C  16209F    prnt   STL    @sp
+0004F  4B2078           JSUB   spush
+00052  0E2099           STA    sp
+00055  4B2072           JSUB   spush
+00058  7A2093           STB    @sp
+0005B  4B206C           JSUB   spush
+0005E  AC03             RMO    
+00060  25000A           DIV    #0
+00063  21000A           MUL    #0
+00066  9403             SUBR   
+00068  25000A           DIV    #0
+0006B  290000           COMP   #0
+0006E  332003           JEQ    prntEnd
+00071  4B2FD8           JSUB   prnt
+00074  AC30      prntEn RMO    
+00076  190030           ADD    #0
+00079  DD0001           WD     #0
+0007C  4B205D           JSUB   spop
+0007F  6A206C           LDB    @sp
+00082  4B2057           JSUB   spop
+00085  022066           LDA    sp
+00088  4B2051           JSUB   spop
+0008B  0A2060           LDL    @sp
+0008E  4C0000           RSUB   
+00091                  ...................................... metoda za branje stevila v A
+00091  010000    rd     LDA    0
+00094  0F2024    rdLoop STA    rdA1
+00097  010000           LDA    0
+0009A  D900FA           RD     #0
+0009D  1D0030           SUB    #0
+000A0  290000           COMP   #0
+000A3  3B200F           JLT    rdEnd
+000A6  0F2012           STA    rdA2
+000A9  03200F           LDA    rdA1
+000AC  21000A           MUL    #0
+000AF  1B2009           ADD    #rdA2
+000B2  3F2FDF           J      rdLoop
+000B5  032003    rdEnd  LDA    rdA1
+000B8  4C0000           RSUB   
+000BB            rdA1   RESW   
+000BB            rdA2   RESW   
+000BB  0F2033    sinit  STA    tempA
+000BE  0100EE           LDA    stack
+000C1  0F202A           STA    sp
+000C4  03202A           LDA    tempA
+000C7  4C0000           RSUB   
+000CA                  . poveca vrednost sp za eno besedo
+000CA  0F2024    spush  STA    tempA
+000CD  03201E           LDA    sp
+000D0  190003           ADD    #0
+000D3  0F2018           STA    sp
+000D6  032018           LDA    tempA
+000D9  4C0000           RSUB   
+000DC  0F2012    spop   STA    tempA
+000DF  03200C           LDA    sp
+000E2  1D0003           SUB    #0
+000E5  0F2006           STA    sp
+000E8  032006           LDA    tempA
+000EB  4C0000           RSUB   
+000EE            stack  RESW   
+000EE  000000    sp     WORD   
+000F1  000000    tempA  WORD   
+000F4  000004    n      WORD   
+000F7                   END    prog

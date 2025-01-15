@@ -71,11 +71,11 @@ public class Lexer {
 	/** Skip whitespace (space and tab), and return true if EOL.
 	 */
 	public boolean skipWhitespace() {
-		while (peek() == ' ' || peek() == '\t') advance();
+		while (peek() == ' ' || peek() == '\t' || peek()=='\r') advance(); // dodal še peek()=='\r' v pogoj...
 		return peek() == '\n' || peek() == 0;
 	}
 
-	String readTo(char delimiter) {
+	public String readTo(char delimiter) {
 		mark();
 		while (peek() > 0 && peek() != delimiter) advance();
 		advance();
@@ -87,6 +87,20 @@ public class Lexer {
 		while (Character.isLetterOrDigit(peek()) || peek() == '_') advance();
 		return extract();
 	}
+	
+	// CUSTOM
+	
+	public String readExpression() {
+		mark();
+		while (Character.isLetterOrDigit(peek()) || isOperator(peek())) advance();
+		return extract();
+	}
+	
+	boolean isOperator(char ch) {
+		return (ch == '+' || ch == '-' || ch == '*' || ch == '/');
+	}
+	
+	//-------------------------
 
 	protected String readDigits(int radix) {
 		mark();

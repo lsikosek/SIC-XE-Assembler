@@ -15,6 +15,10 @@ public class Utils {
 //		return sb.toString();
 	}
 	
+	public static void pr(String s) {
+		System.out.print(s);
+	}
+	
 	public static String toHex(int val, int n) {
 		
 		StringBuilder sb = new StringBuilder();
@@ -52,5 +56,19 @@ public class Utils {
 		return sb.toString();
 	}
 	
+	public static String stringFixedLength(String s, int len) {
+		StringBuilder sb = new StringBuilder();
+		int i = 0;
+		while (i<len) {
+			if (s!=null && i<s.length()) {
+				sb.append(s.charAt(i));
+			} else {
+				sb.append(' ');
+			}
+			i++;
+		}
+		
+		return sb.toString();
+	}
 
 }

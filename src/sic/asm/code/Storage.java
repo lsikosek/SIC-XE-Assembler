@@ -1,14 +1,15 @@
 package sic.asm.code;
 
 import sic.asm.mnemonics.Mnemonic;
+import sic.asm.utils.Opcode;
 import sic.asm.utils.Utils;
 
 public class Storage extends Node{
 	
-	public static final int RESB = 0;
-	public static final int RESW = 1;
-	public static final int BYTE = 2;
-	public static final int WORD = 3;
+//	public static final int RESB = 0;
+//	public static final int RESW = 1;
+//	public static final int BYTE = 2;
+//	public static final int WORD = 3;
 
 	public int value;
 	
@@ -21,16 +22,16 @@ public class Storage extends Node{
     public int length() {
 		
 		switch (mnemonic.opcode) {
-		case RESB:
+		case Opcode.RESB:
 			return value;
 			//break;
-		case RESW:
+		case Opcode.RESW:
 			return 3*value;
 			//break;
-		case BYTE:
+		case Opcode.BYTE:
 			return 1;
 			//break;
-		case WORD:
+		case Opcode.WORD:
 			return 3;
 			//break;
 		}
@@ -43,16 +44,16 @@ public class Storage extends Node{
 		
     	
 		switch (mnemonic.opcode) {
-		case RESB:
+		case Opcode.RESB:
 			return new byte[value];
 			//break;
-		case RESW:
+		case Opcode.RESW:
 			return new byte[3*value];
 			//break;
-		case BYTE:
+		case Opcode.BYTE:
 			return new byte[]{(byte)value};
 			//break;
-		case WORD:
+		case Opcode.WORD:
 			return new byte[]{(byte)(value&0xFF0000),
 							  (byte)(value&0x00FF00),
 							  (byte)(value&0x0000FF)};
@@ -66,10 +67,10 @@ public class Storage extends Node{
 	@Override
 	public String emitText() {
 		switch (mnemonic.opcode) {
-		case RESB:
+		case Opcode.RESB:
 			return new String("");
 			//break;
-		case RESW:
+		case Opcode.RESW:
 			return new String("");
 			//break;
 		default:

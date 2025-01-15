@@ -31,7 +31,7 @@ public class InstructionF3 extends Node {
         this.flags = flags;
         
         //if (label!=null &&label.equals("halt")) {
-			System.out.printf(" symbol %s\n",symbol);
+			//System.out.printf(" symbol %s\n",symbol);
 		//}
     }
     
@@ -43,18 +43,18 @@ public class InstructionF3 extends Node {
     @Override
     public void resolve(Code code) throws ParsingError {
     	
-    	System.out.printf("BEFORE %s\n", Utils.toHex(this.value,6));
+    	//System.out.printf("BEFORE %s\n", Utils.toHex(this.value,6));
     	
 		if (this.symbol != null) {
 			this.value = code.getSymbols().get(this.symbol);
 		}
 		
-    	System.out.printf("AFTER %s\n", Utils.toHex(this.value,6));
+    //	System.out.printf("AFTER %s\n", Utils.toHex(this.value,6));
 
 		
-		this.resolveAddressing(code);
+		if (flags!=null) this.resolveAddressing(code);
 		
-    	System.out.printf("AFTERAFTER %s\n", Utils.toHex(this.value,6));
+    	//System.out.printf("AFTERAFTER %s\n", Utils.toHex(this.value,6));
 
 		
 		

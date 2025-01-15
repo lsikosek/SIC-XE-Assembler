@@ -20,6 +20,11 @@ public class MnemonicDn extends Mnemonic {
 	
 	@Override
 	public Node parse(Parser parser) throws SyntaxError {
+		
+		if (this.name.equals("EQU")) {
+			return new Directive(this, parser.lexer.readExpression());//parser.lexer.readTo('\n'));
+		}
+		
 		// number
 		if (Character.isDigit(parser.lexer.peek()))
 			return new Directive(this, parser.parseNumber(0, Code.MAX_ADDR));

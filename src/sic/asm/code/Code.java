@@ -1,11 +1,18 @@
 package sic.asm.code;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import sic.asm.parsing.ParsingError;
+import sic.asm.utils.Opcode;
 import sic.asm.utils.Utils;
 
 
@@ -38,6 +45,10 @@ public class Code {
 	public boolean baseRelative;
 	public int base;
 	
+	private ListIterator<Node> iteratorHelper;
+	
+	public StringBuilder lst;
+	
 	public int programStart;
 	public int programEnd;
 	
@@ -45,6 +56,9 @@ public class Code {
 		this.name = "";
 		this.program = new ArrayList<>();
 		this.symbols = new HashMap<>();
+		this.lst = new StringBuilder();
+;
+
 
 	}
 	
@@ -111,8 +125,13 @@ public class Code {
     	this.begin();
     	
     	for (Node node : this.program) {
+    		
+    		
+    		
     		System.out.println(node);
     		System.out.println(locctr);
+    		
+    		int oldLocctr = locctr;
 
     		
     		node.enter(this);
@@ -122,6 +141,13 @@ public class Code {
 				e.printStackTrace();
 			}
     		node.leave(this);
+    		
+    		lst.append(Utils.stringFixedLength(Utils.toHex(oldLocctr, 5), 7));
+    		lst.append(Utils.stringFixedLength(node.emitText(), 10));
+    		lst.append(Utils.stringFixedLength(node.label, 6));
+    		lst.append(node.toString());
+    		lst.append('\n');
+    		
     	}
     	
     	this.end();
@@ -163,6 +189,7 @@ public class Code {
     	
     	
     	// Tzapisi
+    	iteratorHelper = program.listIterator();
     	while (locctr < programEnd) {
     		sbT.append(TZapis());
     		sbT.append("\n");
@@ -193,18 +220,29 @@ public class Code {
     	sb.append("T");
     	sb.append(Utils.toHex(addr, 6));
     	
-    	for (Node node: program) {
+    	while (iteratorHelper.hasNext()) {
+    		
+    		Node node = iteratorHelper.next();
+    		
+    		if (node.mnemonic==null) {
+    			continue;
+    			//System.out.printf("null node at %d and size of program is %d\n",iteratorHelper.previousIndex(),program.size());
+    		}
+    		
     		int temp = 0;
-    		if (node.mnemonic.opcode!=Storage.RESW && node.mnemonic.opcode!=Storage.RESB && node.mnemonic.opcode!=Directive.ORG) {
+    		if (node.mnemonic.opcode!=Opcode.RESW && node.mnemonic.opcode!=Opcode.RESB && node.mnemonic.opcode!=Opcode.ORG) {
     			temp = node.length();
     		}
     		else {
+    			//Utils.pr("storage prekinil t zapis\n");
+    			//System.out.printf("%s\n",node.mnemonic.opcode);
         		node.enter(this);
         		node.leave(this);
         		break;
     		}
     		
     		if (length+temp>30) {
+    			iteratorHelper.previous();
     			break;
     		}
     		
@@ -216,6 +254,8 @@ public class Code {
     		node.leave(this);
     		
     	}
+    	
+    	System.out.printf("After TZAPIS at %d\n",addr);
     	
     	sb.append(Utils.toHex(length, 2));
     	sb.append(sb2.toString());
@@ -233,9 +273,29 @@ public class Code {
 			System.out.printf("%s",Utils.toBin(b));
 		}
 		
+		
+		String objFile = this.emitText();
+		String lstFile = this.lst.toString();
+		
+		//String content = "This is the content to save in the file.";
+        
+        try (FileWriter writer = new FileWriter(this.name+".obj")) {
+            writer.write(objFile);
+            System.out.println("OBJ file saved successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        try (FileWriter writer = new FileWriter(this.name+".lst")) {
+            writer.write(lstFile);
+            System.out.println("LST file saved successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		
 		System.out.println(this.emitCode());
 		
-		System.out.print(this.emitText());
+		System.out.print(objFile);
 		
 	}
 	

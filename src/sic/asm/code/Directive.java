@@ -3,6 +3,9 @@ package sic.asm.code;
 import sic.asm.mnemonics.Mnemonic;
 import sic.asm.mnemonics.MnemonicD;
 import sic.asm.mnemonics.MnemonicDn;
+import sic.asm.utils.ExpressionEvaluator;
+import sic.asm.utils.Opcode;
+import sic.asm.utils.Utils;
 
 public class Directive extends Node {
 	
@@ -10,13 +13,13 @@ public class Directive extends Node {
 	//public String symbol;
 
 
-	public static final int NOBASE = 0;
-	public static final int LTORG = 1;
-	public static final int START = 2;
-	public static final int END = 3;
-	public static final int BASE = 4;
-	public static final int EQU = 5;
-	public static final int ORG = 6;
+//	public static final int NOBASE = 0;
+//	public static final int LTORG = 1;
+//	public static final int START = 2;
+//	public static final int END = 3;
+//	public static final int BASE = 4;
+//	public static final int EQU = 5;
+//	public static final int ORG = 6;
     
     
     
@@ -33,17 +36,30 @@ public class Directive extends Node {
     public void activate(Code code) {
     	
     	switch (this.mnemonic.opcode) {
-    	case EQU:
-    		if (this.symbol!=null) {
-    			if (code.getSymbols().containsKey(this.symbol)) {
-    				this.value = code.getSymbols().get(symbol);
-    			} else if (symbol.equals(new String("*"))) {
-    				this.value = code.locctr;
-    			} else {
-    				System.out.printf("Unknown symbol at locctr %d\n",code.locctr);
-    			}
+    	case Opcode.EQU:
+//    		if (this.symbol!=null) {
+//    			if (code.getSymbols().containsKey(this.symbol)) {
+//    				this.value = code.getSymbols().get(symbol);
+//    			} else if (symbol.equals(new String("*"))) {
+//    				this.value = code.locctr;
+//    			} else {
+//    				System.out.printf("EQU: Unknown symbol at locctr %d\n",code.locctr);
+//    			}
+//    		}
+//    		code.put(this.label, this.value);
+    		
+    		try {
+    			ExpressionEvaluator ee = new ExpressionEvaluator(code.getSymbols());
+    			this.value = ee.evaluateExpression(this.symbol);
+    			//Utils.pr("sdf " + value + "\n");
+        		code.put(this.label, this.value);
+    		} catch (Exception e) {
+    			e.printStackTrace();
     		}
-    		code.put(this.label, this.value);
+    		
+    		
+    		
+    		//System.out.printf("EQU symbol: %s value: %d\n",this.symbol,value);
     		break;
     	default:
 			code.put(this.label, code.locctr);
@@ -53,31 +69,34 @@ public class Directive extends Node {
     
     @Override
     public void resolve(Code code) {
-    	if (this.symbol != null) {
+    	if (this.symbol != null && !this.mnemonic.name.equals("EQU")) {
+    		//System.out.printf("%s label: %s symbol: %s value: %d\n",this.mnemonic.name, label, symbol, value);//code.getSymbols().get(this.symbol));
+
 			this.value = code.getSymbols().get(this.symbol);
+
 		}
     	
     	switch (this.mnemonic.opcode) {
-    	case NOBASE:
+    	case Opcode.NOBASE:
     		code.baseRelative = false;
     		break;
-    	case BASE:
+    	case Opcode.BASE:
     		code.base = this.value;
     		code.baseRelative = true;
     		break;
-    	case LTORG:
+    	case Opcode.LTORG:
     		// TODO
     		break;
-    	case START:
+    	case Opcode.START:
     		code.setName(this.label);
     		code.programStart = this.value;
     		break;
-    	case END:
+    	case Opcode.END:
     		code.programEnd = code.locctr;//this.value;
     		break;
-    	case EQU:
+    	case Opcode.EQU:
     		break;
-    	case ORG:
+    	case Opcode.ORG:
     		code.locctr = this.value;
     		code.locctr2 = this.value;
     		break;

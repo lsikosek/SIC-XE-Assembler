@@ -42,7 +42,7 @@ public class MnemonicF3m extends Mnemonic{
 		else if (Character.isLetter(parser.lexer.peek()) || parser.lexer.peek() == '_') {
 			value = 0;
 			symbol = parser.parseSymbol();
-			System.out.printf("Parsed: %s mnemonic %s\n",symbol,this);
+			//System.out.printf("Parsed: %s mnemonic %s\n",symbol,this);
 		} else {
 			throw new SyntaxError(String.format("Invalid character '%c", parser.lexer.peek()), parser.lexer.row, parser.lexer.col);
 		}

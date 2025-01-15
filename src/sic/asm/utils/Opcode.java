@@ -112,29 +112,29 @@ public class Opcode {
 
     // ************ Directives ******************
 
-    public static final int START       = 0;
-    public static final int END         = 1;
+    public static final int START       = 0+0xF00;
+    public static final int END         = 1+0xF00;
 
-    public static final int CSECT       = 2;
-    public static final int USE         = 3;
-    public static final int EXTREF      = 4;
-    public static final int EXTDEF      = 5;
+    public static final int CSECT       = 2+0xF00;
+    public static final int USE         = 3+0xF00;
+    public static final int EXTREF      = 4+0xF00;
+    public static final int EXTDEF      = 5+0xF00;
 
-    public static final int ORG         = 6;
-    public static final int LTORG       = 7;
+    public static final int ORG         = 6+0xF00;
+    public static final int LTORG       = 7+0xF00;
 
-    public static final int BASE        = 8;
-    public static final int NOBASE      = 9;
+    public static final int BASE        = 8+0xF00;
+    public static final int NOBASE      = 9+0xF00;
 
-    public static final int EQU         = 10;
+    public static final int EQU         = 10+0xF00;
 
     // Storage directives
 
-    public static final int RESB        = 0;
-    public static final int RESW        = 1;
-    public static final int RESF        = 2;
-    public static final int BYTE        = 3;
-    public static final int WORD        = 4;
-    public static final int FLOT        = 5;
+    public static final int RESB        = 0+0xF000;
+    public static final int RESW        = 1+0xF000;
+    public static final int RESF        = 2+0xF000;
+    public static final int BYTE        = 3+0xF000;
+    public static final int WORD        = 4+0xF000;
+    public static final int FLOT        = 5+0xF000;
 
 }

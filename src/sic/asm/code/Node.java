@@ -76,7 +76,7 @@ public abstract class Node {
 	public void activate(Code code) {
 		
 		
-		System.out.printf("%s label %s symbol %s\n", this.mnemonic.name, this.label, this.symbol);
+		//System.out.printf("%s label %s symbol %s\n", this.mnemonic.name, this.label, this.symbol);
 		
 		
 		code.put(this.label, code.locctr/*+this.length()*/); //TODO possible cause of narobe addressing
@@ -100,7 +100,7 @@ public abstract class Node {
 		for (byte b_ : arr) {
 			
 
-			System.out.printf("[%s - %s\n",Utils.toBin(b_),Utils.toHex(b_));
+			//System.out.printf("[%s - %s\n",Utils.toBin(b_),Utils.toHex(b_));
 
 			int b = Flags.intToDisp(b_);
 			//System.out.printf("%s - %s]\n",Utils.toBin(b),Utils.toHex(b));
@@ -110,7 +110,7 @@ public abstract class Node {
 			sb.append(Utils.toHex(b_));
 		}
 		
-		System.out.print("\n");
+		//System.out.print("\n");
 		
 		return sb.toString();
 	}

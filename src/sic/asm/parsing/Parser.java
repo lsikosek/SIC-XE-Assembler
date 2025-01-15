@@ -156,7 +156,14 @@ public class Parser {
 		// check for label
 		String label = parseLabel();
 		// skip whitespace: if EOL and without label then continue (i.e. skip empty lines)
+		
+//		if (label == null) {
+//			System.out.println("At "+ lexer.row + ',' + lexer.col + " label is null");
+//
+//		}
+		
 		if (lexer.skipWhitespace() && label == null) {
+			//System.out.println("Skipped line");
 			lexer.advance();  // skip EOL
 			return null;
 		}
@@ -179,6 +186,8 @@ public class Parser {
 		
 		return node;
 	}
+	
+	//public String parseExpression() {}
 
 	public Code parseCode() throws SyntaxError, SemanticError {
 		Code code = new Code();
@@ -218,18 +227,18 @@ public class Parser {
 		
 		this.mnemonics = new HashMap<String, Mnemonic>();
 		// Directives
-		put(new MnemonicD ("NOBASE",	Directive.NOBASE,	"directive", "Unset base register."));
-		put(new MnemonicD ("LTORG",		Directive.LTORG,	"directive", "Flush literals."));
-		put(new MnemonicDn("START",		Directive.START,	"directive", "Set code start address."));
-		put(new MnemonicDn("END",		Directive.END,		"directive", "End code."));
-		put(new MnemonicDn("BASE",		Directive.BASE,		"directive", "Set base register."));
-		put(new MnemonicDn("EQU",		Directive.EQU,		"directive", "Equate symbol to expression."));
-		put(new MnemonicDn("ORG",		Directive.ORG,		"directive", "Set location counter."));
+		put(new MnemonicD ("NOBASE",	Opcode.NOBASE,	"directive", "Unset base register."));
+		put(new MnemonicD ("LTORG",		Opcode.LTORG,	"directive", "Flush literals."));
+		put(new MnemonicDn("START",		Opcode.START,	"directive", "Set code start address."));
+		put(new MnemonicDn("END",		Opcode.END,		"directive", "End code."));
+		put(new MnemonicDn("BASE",		Opcode.BASE,		"directive", "Set base register."));
+		put(new MnemonicDn("EQU",		Opcode.EQU,		"directive", "Equate symbol to expression."));
+		put(new MnemonicDn("ORG",		Opcode.ORG,		"directive", "Set location counter."));
 		// Storage directives
-		put(new MnemonicSn("RESB",		Storage.RESB,		"storage\t", "Reserve bytes."));
-		put(new MnemonicSn("RESW",		Storage.RESW,		"storage\t", "Reserve words."));
-		put(new MnemonicSd("BYTE",		Storage.BYTE,		"storage\t", "Initialize bytes."));
-		put(new MnemonicSd("WORD",		Storage.WORD,		"storage\t", "Initialize words."));
+		put(new MnemonicSn("RESB",		Opcode.RESB,		"storage\t", "Reserve bytes."));
+		put(new MnemonicSn("RESW",		Opcode.RESW,		"storage\t", "Reserve words."));
+		put(new MnemonicSd("BYTE",		Opcode.BYTE,		"storage\t", "Initialize bytes."));
+		put(new MnemonicSd("WORD",		Opcode.WORD,		"storage\t", "Initialize words."));
 		// Format 1 mnemonics, no operand
 		put(new MnemonicF1("FIX",		Opcode.FIX,			"A<-int(F)", "Convert to fixed point number."));
 		put(new MnemonicF1("FLOAT", 	Opcode.FLOAT,		"F<-float (A)", "Convert to floating point number."));
