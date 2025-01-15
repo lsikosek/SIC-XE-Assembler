@@ -22,8 +22,10 @@ public class ExpressionEvaluator {
     public int evaluateExpression(String expression) throws Exception {
         // Replace variables with their values in the expression
         for (String key : variables.keySet()) {
+        	System.out.printf("KEY %s : %d\n",key,variables.get(key));
         	if (key==null) continue;
-            expression = expression.replace(key, variables.get(key).toString());
+            expression = expression.replace("{"+key+"}", variables.get(key).toString());
+            System.out.printf("NEW EXPR %s\n",expression);
         }
 
         // Evaluate the resulting arithmetic expression

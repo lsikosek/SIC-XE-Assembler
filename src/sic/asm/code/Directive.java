@@ -25,11 +25,21 @@ public class Directive extends Node {
     
     public Directive(Mnemonic mnemonic, int value) {
     	super(mnemonic);
+    	//System.out.println("adsfdsaf" +value);
+    	this.value = value;
     }
     
     public Directive(Mnemonic mnemonic, String symbol) {
     	super(mnemonic);
     	this.symbol = symbol;
+    }
+    
+    
+    @Override
+    public void leave(Code code) {
+    	if (this.mnemonic.name.equals("ORG")) {
+    		code.locctr = this.value;
+    	}
     }
     
     @Override
@@ -49,10 +59,15 @@ public class Directive extends Node {
 //    		code.put(this.label, this.value);
     		
     		try {
-    			ExpressionEvaluator ee = new ExpressionEvaluator(code.getSymbols());
-    			this.value = ee.evaluateExpression(this.symbol);
-    			//Utils.pr("sdf " + value + "\n");
-        		code.put(this.label, this.value);
+    			if (this.symbol!=null && this.symbol.equals("*")) {
+    				code.put(this.label, code.locctr);
+    			}
+    			else  {
+					ExpressionEvaluator ee = new ExpressionEvaluator(code.getSymbols());
+					this.value = ee.evaluateExpression(this.symbol);
+					//Utils.pr("sdf " + value + "\n");
+					code.put(this.label, this.value);
+				}
     		} catch (Exception e) {
     			e.printStackTrace();
     		}
@@ -97,8 +112,8 @@ public class Directive extends Node {
     	case Opcode.EQU:
     		break;
     	case Opcode.ORG:
-    		code.locctr = this.value;
-    		code.locctr2 = this.value;
+    		//code.locctr = this.value;
+    		//code.locctr2 = this.value;
     		break;
     	}
     }

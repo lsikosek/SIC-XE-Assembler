@@ -97,7 +97,7 @@ public class Lexer {
 	}
 	
 	boolean isOperator(char ch) {
-		return (ch == '+' || ch == '-' || ch == '*' || ch == '/');
+		return (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '{' || ch=='}');
 	}
 	
 	//-------------------------

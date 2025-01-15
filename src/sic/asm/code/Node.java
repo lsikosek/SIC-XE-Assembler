@@ -79,7 +79,7 @@ public abstract class Node {
 		//System.out.printf("%s label %s symbol %s\n", this.mnemonic.name, this.label, this.symbol);
 		
 		
-		code.put(this.label, code.locctr/*+this.length()*/); //TODO possible cause of narobe addressing
+		if (label!=null) code.put(this.label, code.locctr/*+this.length()*/); //TODO possible cause of narobe addressing
 	}
 	
 	public void resolve(Code code) throws ParsingError {

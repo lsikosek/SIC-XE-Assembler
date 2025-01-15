@@ -1,5 +1,5 @@
 00000            prog   START  0
-00000  4B20B8           JSUB   sinit
+00000  4B20BE           JSUB   sinit
 00003  4B208B    loop   JSUB   rd
 00006  290000           COMP   #0
 00009  332012           JEQ    halt
@@ -10,27 +10,27 @@
 00018  DD0001           WD     #0
 0001B  3F2FE5           J      loop
 0001E  3F2FFD    halt   J      halt
-00021  1620CA    fac    STL    @sp
-00024  4B20A3           JSUB   spush
+00021  160CAC    fac    STL    @sp
+00024  4B20A9           JSUB   spush
 00027  290001           COMP   #0
 0002A  332016           JEQ    facEnd
 0002D  AC03             RMO    
-0002F  7A20BC           STB    @sp
-00032  4B2095           JSUB   spush
+0002F  7A0CAC           STB    @sp
+00032  4B209B           JSUB   spush
 00035  1D0001           SUB    #0
 00038  4B2FE6           JSUB   fac
-0003B  4B209E           JSUB   spop
-0003E  6A20AD           LDB    @sp
+0003B  4B20A4           JSUB   spop
+0003E  6A0CAC           LDB    @sp
 00041  9830             MULR   
-00043  4B2096    facEnd JSUB   spop
-00046  0A20A5           LDL    @sp
+00043  4B209C    facEnd JSUB   spop
+00046  0A0CAC           LDL    @sp
 00049  4C0000           RSUB   
-0004C  16209F    prnt   STL    @sp
-0004F  4B2078           JSUB   spush
-00052  0E2099           STA    sp
-00055  4B2072           JSUB   spush
-00058  7A2093           STB    @sp
-0005B  4B206C           JSUB   spush
+0004C  160CAC    prnt   STL    @sp
+0004F  4B207E           JSUB   spush
+00052  0E0CAC           STA    sp
+00055  4B2078           JSUB   spush
+00058  7A0CAC           STB    @sp
+0005B  4B2072           JSUB   spush
 0005E  AC03             RMO    
 00060  25000A           DIV    #0
 00063  21000A           MUL    #0
@@ -42,12 +42,12 @@
 00074  AC30      prntEn RMO    
 00076  190030           ADD    #0
 00079  DD0001           WD     #0
-0007C  4B205D           JSUB   spop
-0007F  6A206C           LDB    @sp
-00082  4B2057           JSUB   spop
-00085  022066           LDA    sp
-00088  4B2051           JSUB   spop
-0008B  0A2060           LDL    @sp
+0007C  4B2063           JSUB   spop
+0007F  6A0CAC           LDB    @sp
+00082  4B205D           JSUB   spop
+00085  020CAC           LDA    sp
+00088  4B2057           JSUB   spop
+0008B  0A0CAC           LDL    @sp
 0008E  4C0000           RSUB   
 00091                  ...................................... metoda za branje stevila v A
 00091  010000    rd     LDA    0
@@ -57,35 +57,35 @@
 0009D  1D0030           SUB    #0
 000A0  290000           COMP   #0
 000A3  3B200F           JLT    rdEnd
-000A6  0F2012           STA    rdA2
+000A6  0F2015           STA    rdA2
 000A9  03200F           LDA    rdA1
 000AC  21000A           MUL    #0
-000AF  1B2009           ADD    #rdA2
+000AF  1B200C           ADD    #rdA2
 000B2  3F2FDF           J      rdLoop
 000B5  032003    rdEnd  LDA    rdA1
 000B8  4C0000           RSUB   
 000BB            rdA1   RESW   
-000BB            rdA2   RESW   
-000BB  0F2033    sinit  STA    tempA
-000BE  0100EE           LDA    stack
-000C1  0F202A           STA    sp
-000C4  03202A           LDA    tempA
-000C7  4C0000           RSUB   
-000CA                  . poveca vrednost sp za eno besedo
-000CA  0F2024    spush  STA    tempA
-000CD  03201E           LDA    sp
-000D0  190003           ADD    #0
-000D3  0F2018           STA    sp
-000D6  032018           LDA    tempA
-000D9  4C0000           RSUB   
-000DC  0F2012    spop   STA    tempA
-000DF  03200C           LDA    sp
-000E2  1D0003           SUB    #0
-000E5  0F2006           STA    sp
-000E8  032006           LDA    tempA
-000EB  4C0000           RSUB   
-000EE            stack  RESW   
-000EE  000000    sp     WORD   
-000F1  000000    tempA  WORD   
-000F4  000004    n      WORD   
-000F7                   END    prog
+000BE            rdA2   RESW   
+000C1  0C0CAF    sinit  STA    tempA
+000C4  0100F4           LDA    stack
+000C7  0C0CAC           STA    sp
+000CA  000CAF           LDA    tempA
+000CD  4C0000           RSUB   
+000D0                  . poveca vrednost sp za eno besedo
+000D0  0C0CAF    spush  STA    tempA
+000D3  000CAC           LDA    sp
+000D6  190003           ADD    #0
+000D9  0C0CAC           STA    sp
+000DC  000CAF           LDA    tempA
+000DF  4C0000           RSUB   
+000E2  0C0CAF    spop   STA    tempA
+000E5  000CAC           LDA    sp
+000E8  1D0003           SUB    #0
+000EB  0C0CAC           STA    sp
+000EE  000CAF           LDA    tempA
+000F1  4C0000           RSUB   
+000F4            stack  RESW   
+00CAC  000000    sp     WORD   
+00CAF  000000    tempA  WORD   
+00CB2  000004    n      WORD   
+00CB5                   END    prog

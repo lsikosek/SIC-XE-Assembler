@@ -297,6 +297,13 @@ public class Code {
 		
 		System.out.print(objFile);
 		
+		
+//		for (String key : symbols.keySet()) {
+//        	System.out.printf("KEY %s : %d\n",key,symbols.get(key));
+//        	//if (key==null) continue;
+//            //expression = expression.replace(key, variables.get(key).toString());
+//        }
+		
 	}
 	
 	

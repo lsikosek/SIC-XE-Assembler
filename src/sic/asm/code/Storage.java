@@ -19,14 +19,32 @@ public class Storage extends Node{
 	}
 	
 	@Override
+	public void leave(Code code) {
+		
+		System.out.printf("STORGAE: %s %d\n",this.mnemonic.name, value);
+		
+		if (this.mnemonic.opcode == Opcode.RESB) {
+	    	code.locctr += this.value;
+		}
+		else if (this.mnemonic.opcode == Opcode.RESW) {
+	    	code.locctr += 3*this.value;
+		} else {
+			code.locctr += this.length();
+		}
+	}
+	
+	@Override
     public int length() {
 		
 		switch (mnemonic.opcode) {
 		case Opcode.RESB:
-			return value;
+			System.out.printf("value of storage: %d\n",value);
+
+			return 0;//value;
 			//break;
 		case Opcode.RESW:
-			return 3*value;
+			System.out.printf("value of storage: %d\n",value);
+			return 0;//3*value;
 			//break;
 		case Opcode.BYTE:
 			return 1;
@@ -54,8 +72,8 @@ public class Storage extends Node{
 			return new byte[]{(byte)value};
 			//break;
 		case Opcode.WORD:
-			return new byte[]{(byte)(value&0xFF0000),
-							  (byte)(value&0x00FF00),
+			return new byte[]{(byte)((value&0xFF0000)>>16),
+							  (byte)((value&0x00FF00)>>8),
 							  (byte)(value&0x0000FF)};
 			//break;
 		}
@@ -83,6 +101,9 @@ public class Storage extends Node{
 			}
 			
 			return sb.toString();
+			
+			
+
 			//break;
 		}
 		
